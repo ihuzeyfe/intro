@@ -3,24 +3,21 @@ import { ListGroup, ListGroupItem } from "reactstrap";
 
 export default class CategoryList extends Component {
   state = {
-      categories: [],
+    categories: [],
+  };
 
-    };
-    
+  componentDidMount() {
+    this.getCategories();
+  }
 
-    componentDidMount(){
-      this.getCategories();
-    }
+  //jsondan verileri çekeceğiz artık aşağıdaki fonks o yüzden yazdık...
+  // önce linki çalıştırıyor çalışıp response geliyo ve json a döndürüyor oda aşağıya döndürüyor aşamalı
 
-    //jsondan verileri çekeceğiz artık aşağıdaki fonks o yüzden yazdık...
-    // önce linki çalıştırıyor çalışıp response geliyo ve json a döndürüyor oda aşağıya döndürüyor aşamalı
-
-    getCategories = () => {
-      fetch("http://localhost:3000/categories")
-      .then(response=>response.json())
-      .then(data=>this.setState({categories:data}));
-    }
-    
+  getCategories = () => {
+    fetch("http://localhost:3000/categories")
+      .then((response) => response.json())
+      .then((data) => this.setState({ categories: data }));
+  };
 
   // şimdi sıra ürünleri listelemeye geldi...
 
@@ -31,14 +28,21 @@ export default class CategoryList extends Component {
         <h3>{this.state.counter}</h3>
         <ListGroup>
           {this.state.categories.map((category) => (
-            <ListGroupItem onClick={()=>this.props.changeCategory(category)}
-              key={category.Id}>{category.categoryName}</ListGroupItem>
+            <ListGroupItem
+              active={category.categoryName === this.props.currentCategory?true:false}
+              
+              //categoryName, currentCategory ye eşitse true değilse false eşitse aktif değilse pasif
+              onClick={() => this.props.changeCategory(category)}
+              key={category.Id}
+            >
+              {category.categoryName}
+            </ListGroupItem>
           ))}
         </ListGroup>
 
-        <h4>
+        {/* <h4>
           {this.props.currentCategory}
-        </h4>
+        </h4> */}
       </div>
     );
   }
