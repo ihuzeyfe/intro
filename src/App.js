@@ -5,12 +5,20 @@ import ProductList from "./ProductList";
 import { Container, Row, Col } from "reactstrap";
 
 export default class App extends Component {
+  state = { currentCategory: "", products:[] };
 
-  state={currentCategory:""}
-
-  changeCategory = category => {
-    this.setState({currentCategory: category.categoryName})
+  componentDidMount(){
+    this.getProducts();
   }
+
+  changeCategory = (category) => {
+    this.setState({ currentCategory: category.categoryName });
+  };
+  getProducts = () => {
+    fetch("http://localhost:3000/products")
+      .then((response) => response.json())
+      .then((data) => this.setState({ products: data }));
+  };
 
   render() {
     let categoryInfo = { title: "Huzeyfe", baskaBirsey: "İstanbul" };
@@ -23,10 +31,18 @@ export default class App extends Component {
           </Row>
           <Row>
             <Col xs="3">
-              <CategoryList currentCategory={this.state.currentCategory} changeCategory={this.changeCategory} info={categoryInfo}></CategoryList>
+              <CategoryList
+                currentCategory={this.state.currentCategory}
+                changeCategory={this.changeCategory}
+                info={categoryInfo}
+              ></CategoryList>
             </Col>
             <Col xs="9">
-              <ProductList currentCategory={this.state.currentCategory} info={productInfo}></ProductList>
+              <ProductList
+                products={this.state.products}
+                currentCategory={this.state.currentCategory}
+                info={productInfo}
+              ></ProductList>
             </Col>
           </Row>
         </Container>
@@ -34,7 +50,6 @@ export default class App extends Component {
     );
   }
 }
-
 
 //changecategory yi app de yazdık; çünkü biz bu fonksiyonu product liste de geçmek istiyoruz. şuan o kısmı yapmadık ama yapacağız. react da componentler arası birşey taşınamadığından biz yapacağımız şeyi app ye taşıdık oradan inherit olan tag orası olduğu için product içine taşıyabileceğiz. app nin state diye bir currentCategory si var ve biz o state i bir prop mantığı ile yukarıda çalıştırdık
 
