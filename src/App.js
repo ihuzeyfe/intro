@@ -40,6 +40,15 @@ export default class App extends Component {
     this.setState({ cart: newCart }); // cart değerimiz newCart tır.
   };
 
+  //----------------------sepeti silme--------------------------------
+
+   removeFromCart=(product)=> {
+    let newCart = this.state.cart.filter(c=>c.product.id!==product.id)
+    this.setState({cart:newCart})
+   } 
+
+  //------------------------------------------------------------
+
   render() {
     let categoryInfo = { title: "Huzeyfe", baskaBirsey: "İstanbul" };
     let productInfo = { title: "İsmail" };
