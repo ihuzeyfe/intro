@@ -4,10 +4,11 @@ import CategoryList from "./CategoryList";
 import ProductList from "./ProductList";
 import { Container, Row, Col } from "reactstrap";
 
+//json-server --watch db.json
 export default class App extends Component {
-  state = { currentCategory: "", products:[], cart:[] };
+  state = { currentCategory: "", products: [], cart: [] };
 
-  componentDidMount(){
+  componentDidMount() {
     this.getProducts();
   }
 
@@ -16,10 +17,9 @@ export default class App extends Component {
     this.getProducts(category.id); //seoUrl olunca product değişiyo ve bu kod getProduct ı tek.çağırı
   };
   getProducts = (categoryId) => {
-
     let url = "http://localhost:3000/products";
-    if(categoryId){
-      url+= "?categoryId=" +categoryId;           //yani gönderilen seoUrl yi ekle demiş olduk
+    if (categoryId) {
+      url += "?categoryId=" + categoryId; //yani gönderilen seoUrl yi ekle demiş olduk
     }
 
     fetch(url)
@@ -27,17 +27,18 @@ export default class App extends Component {
       .then((data) => this.setState({ products: data }));
   };
 
-  addToCart=(product)=>{
+  addToCart = (product) => {
     let newCart = this.state.cart; // yani this state cart ı yeni bir değişkene atadık
-    var addedItem = newCart.find(c=>c.product.id === product.id);  //git bak bizim ürün o productlarda var mı? yada
-    if(addedItem){             // burada seçtiğimizi bir daha sayı olarak eklemiyoruz.
-      addedItem.quantity+=1;
+    var addedItem = newCart.find((c) => c.product.id === product.id); //git bak bizim ürün o productlarda var mı? yada
+    if (addedItem) {
+      // burada seçtiğimizi bir daha sayı olarak eklemiyoruz.
+      addedItem.quantity += 1;
     } else {
-      newCart.push({product:product, quantity:1}) // (array e eleman ekleme) eğer eleman yoksa ekle
+      newCart.push({ product: product, quantity: 1 }); // (array e eleman ekleme) eğer eleman yoksa ekle
     }
-    
-    this.setState({cart:newCart}); // cart değerimiz newCart tır. 
-  }
+
+    this.setState({ cart: newCart }); // cart değerimiz newCart tır.
+  };
 
   render() {
     let categoryInfo = { title: "Huzeyfe", baskaBirsey: "İstanbul" };
@@ -45,11 +46,8 @@ export default class App extends Component {
     return (
       <div>
         <Container>
-         
-          <Navi  cart={this.state.cart} >
-         
-          </Navi>
-        
+          <Navi cart={this.state.cart}></Navi>
+
           <Row>
             <Col xs="3">
               <CategoryList
@@ -61,7 +59,7 @@ export default class App extends Component {
             <Col xs="9">
               <ProductList
                 products={this.state.products}
-                addToCart = {this.addToCart}
+                addToCart={this.addToCart}
                 currentCategory={this.state.currentCategory}
                 info={productInfo}
               ></ProductList>

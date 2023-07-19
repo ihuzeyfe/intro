@@ -1,5 +1,5 @@
-import React from 'react';
-import './nav.css';
+import React from "react";
+import "./nav.css";
 import {
   Collapse,
   Navbar,
@@ -8,10 +8,8 @@ import {
   Nav,
   NavItem,
   NavLink,
-  UncontrolledDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem } from 'reactstrap';
+} from "reactstrap";
+import CartSummary from "./CartSummary";
 
 export default class Navi extends React.Component {
   constructor(props) {
@@ -19,45 +17,33 @@ export default class Navi extends React.Component {
 
     this.toggle = this.toggle.bind(this);
     this.state = {
-      isOpen: false
+      isOpen: false,
     };
   }
   toggle() {
     this.setState({
-      isOpen: !this.state.isOpen
+      isOpen: !this.state.isOpen,
     });
   }
   render() {
     return (
       <div>
-        <Navbar color="danger"  light expand="md">
+        <Navbar color="danger" light expand="md">
           <NavbarBrand href="/">Huzeyfe App</NavbarBrand>
           <NavbarToggler onClick={this.toggle} />
           <Collapse isOpen={this.state.isOpen} navbar className="naviyk">
-            <Nav className="ml-auto"  navbar>
+            <Nav className="ml-auto" navbar>
               <NavItem>
                 <NavLink href="/components/">Components</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink href="https://github.com/reactstrap/reactstrap">GitHub</NavLink>
+                <NavLink href="https://github.com/reactstrap/reactstrap">
+                  GitHub
+                </NavLink>
               </NavItem>
-              <UncontrolledDropdown nav inNavbar>
-                <DropdownToggle nav caret>
-                  Options - {this.props.cart.length}
-                </DropdownToggle>
-                <DropdownMenu right>
-                  <DropdownItem>
-                    Option 1
-                  </DropdownItem>
-                  <DropdownItem>
-                    Option 2
-                  </DropdownItem>
-                  <DropdownItem divider />
-                  <DropdownItem>
-                    Reset
-                  </DropdownItem>
-                </DropdownMenu>
-              </UncontrolledDropdown>
+              <CartSummary cart={this.props.cart} >
+
+              </CartSummary>
             </Nav>
           </Collapse>
         </Navbar>
