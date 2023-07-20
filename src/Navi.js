@@ -41,7 +41,7 @@ export default class Navi extends React.Component {
                   GitHub
                 </NavLink>
               </NavItem>
-              <CartSummary cart={this.props.cart} >
+              <CartSummary removeFromCart={this.props.removeFromCart} cart={this.props.cart} >
 
               </CartSummary>
             </Nav>

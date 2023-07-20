@@ -3,6 +3,9 @@ import Navi from "./Navi";
 import CategoryList from "./CategoryList";
 import ProductList from "./ProductList";
 import { Container, Row, Col } from "reactstrap";
+import alertify from "alertifyjs";
+import { Route } from "react-router-dom";
+import NotFound from "./NotFound";
 
 //json-server --watch db.json
 export default class App extends Component {
@@ -27,6 +30,7 @@ export default class App extends Component {
       .then((data) => this.setState({ products: data }));
   };
 
+  //-----------------------alertify burada---------------------------------------
   addToCart = (product) => {
     let newCart = this.state.cart; // yani this state cart ı yeni bir değişkene atadık
     var addedItem = newCart.find((c) => c.product.id === product.id); //git bak bizim ürün o productlarda var mı? yada
@@ -38,14 +42,17 @@ export default class App extends Component {
     }
 
     this.setState({ cart: newCart }); // cart değerimiz newCart tır.
+    alertify.success(product.productName + "added to cart!!", 2);
   };
+
+  //------------------------------------------------------------------------------------------
 
   //----------------------sepeti silme--------------------------------
 
-   removeFromCart=(product)=> {
-    let newCart = this.state.cart.filter(c=>c.product.id!==product.id)
-    this.setState({cart:newCart})
-   } 
+  removeFromCart = (product) => {
+    let newCart = this.state.cart.filter((c) => c.product.id !== product.id);
+    this.setState({ cart: newCart });
+  };
 
   //------------------------------------------------------------
 
@@ -55,7 +62,10 @@ export default class App extends Component {
     return (
       <div>
         <Container>
-          <Navi cart={this.state.cart}></Navi>
+          <Navi
+            removeFromCart={this.removeFromCart}
+            cart={this.state.cart}
+          ></Navi>
 
           <Row>
             <Col xs="3">
@@ -66,6 +76,10 @@ export default class App extends Component {
               ></CategoryList>
             </Col>
             <Col xs="9">
+              <switch>
+                <Route exact path="/" component={NotFound} ></Route>
+              </switch>
+
               <ProductList
                 products={this.state.products}
                 addToCart={this.addToCart}
